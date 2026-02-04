@@ -1,5 +1,5 @@
 {
-    "name": "iplaygames/sdk",
+    "name": "iplaygames/sdk-wrapper-php",
     "description": "IPlayGames API SDK - High-level wrapper for casino game aggregation",
     "type": "library",
     "license": "MIT",
