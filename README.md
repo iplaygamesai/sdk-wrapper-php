@@ -5,7 +5,7 @@ High-level PHP SDK for the IPlayGames Game Aggregator API.
 ## Installation
 
 ```bash
-composer require iplaygames/sdk
+composer require iplaygames/sdk-wrapper-php
 ```
 
 ## Quick Start

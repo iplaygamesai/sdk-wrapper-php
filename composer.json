@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": "^8.1",
-        "iplaygames/api-client": "^1.0"
+        "iplaygames/api-client-php": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0"
@@ -26,12 +26,6 @@
             "IPlayGames\\Tests\\": "tests/"
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../sdks/php"
-        }
-    ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
