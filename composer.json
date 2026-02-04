@@ -1,0 +1,37 @@
+{
+    "name": "iplaygames/sdk",
+    "description": "IPlayGames API SDK - High-level wrapper for casino game aggregation",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "IPlayGames",
+            "email": "support@iplaygames.ai"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "iplaygames/api-client": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "IPlayGames\\": "src/IPlayGames/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "IPlayGames\\Tests\\": "tests/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../sdks/php"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
