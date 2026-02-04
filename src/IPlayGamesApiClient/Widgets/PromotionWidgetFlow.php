@@ -1,9 +1,9 @@
 <?php
 
-namespace IPlayGames\Widgets;
+namespace IPlayGamesApiClient\Widgets;
 
-use IPlayGames\Client;
-use IPlayGames\Traits\ModelToArrayTrait;
+use IPlayGamesApiClient\Client;
+use IPlayGamesApiClient\Traits\ModelToArrayTrait;
 use IPlayGamesApiClient\Api\WidgetManagementApi;
 use IPlayGamesApiClient\Model\RegisterANewDomainRequest;
 use IPlayGamesApiClient\Model\GenerateAWidgetTokenRequest;

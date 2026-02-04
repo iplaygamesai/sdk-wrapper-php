@@ -11,7 +11,7 @@ composer require iplaygames/sdk-wrapper-php
 ## Quick Start
 
 ```php
-use IPlayGames\Client;
+use IPlayGamesApiClient\Client;
 
 $client = new Client([
     'api_key' => 'your-api-key',
@@ -211,8 +211,8 @@ GameHub sends webhooks for transactions. Your casino must implement a webhook en
 ### Implementing Your Webhook Controller
 
 ```php
-use IPlayGames\Client;
-use IPlayGames\Webhooks\WebhookHandler;
+use IPlayGamesApiClient\Client;
+use IPlayGamesApiClient\Webhooks\WebhookHandler;
 
 class WebhookController
 {

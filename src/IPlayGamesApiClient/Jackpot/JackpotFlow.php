@@ -1,9 +1,9 @@
 <?php
 
-namespace IPlayGames\Jackpot;
+namespace IPlayGamesApiClient\Jackpot;
 
-use IPlayGames\Client;
-use IPlayGames\Traits\ModelToArrayTrait;
+use IPlayGamesApiClient\Client;
+use IPlayGamesApiClient\Traits\ModelToArrayTrait;
 use IPlayGamesApiClient\Api\EndpointsApi;
 use IPlayGamesApiClient\Model\ConfigureJackpotSettingsForTheOperatorRequest;
 use IPlayGamesApiClient\Model\AddGamesToAJackpotPoolTypeRequest;

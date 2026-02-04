@@ -1,6 +1,6 @@
 <?php
 
-namespace IPlayGames\Traits;
+namespace IPlayGamesApiClient\Traits;
 
 /**
  * Trait for converting SDK model objects to arrays

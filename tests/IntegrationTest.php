@@ -8,8 +8,8 @@
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-use IPlayGames\Client;
-use IPlayGames\Webhooks\WebhookHandler;
+use IPlayGamesApiClient\Client;
+use IPlayGamesApiClient\Webhooks\WebhookHandler;
 
 // Configuration
 $apiKey = getenv('IPLAYGAMES_API_KEY') ?: 'YOUR_API_TOKEN';

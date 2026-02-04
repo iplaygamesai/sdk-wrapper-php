@@ -1,8 +1,8 @@
 <?php
 
-namespace IPlayGames\Sessions;
+namespace IPlayGamesApiClient\Sessions;
 
-use IPlayGames\Client;
+use IPlayGamesApiClient\Client;
 use IPlayGamesApiClient\Api\GameSessionsApi;
 use IPlayGamesApiClient\Model\StartAGameSessionRequest;
 use IPlayGamesApiClient\Model\StartAGameSession201Response;

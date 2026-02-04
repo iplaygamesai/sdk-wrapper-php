@@ -1,6 +1,6 @@
 <?php
 
-namespace IPlayGames\Webhooks;
+namespace IPlayGamesApiClient\Webhooks;
 
 /**
  * Webhook Handler

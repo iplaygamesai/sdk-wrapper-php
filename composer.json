@@ -18,12 +18,12 @@
     },
     "autoload": {
         "psr-4": {
-            "IPlayGames\\": "src/IPlayGames/"
+            "IPlayGamesApiClient\\": "src/IPlayGamesApiClient/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "IPlayGames\\Tests\\": "tests/"
+            "IPlayGamesApiClient\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "stable",

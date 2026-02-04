@@ -1,8 +1,8 @@
 <?php
 
-namespace IPlayGames\MultiSession;
+namespace IPlayGamesApiClient\MultiSession;
 
-use IPlayGames\Client;
+use IPlayGamesApiClient\Client;
 use IPlayGamesApiClient\Api\MultiSessionsApi;
 use IPlayGamesApiClient\Model\StartAMultiSessionRequest;
 use IPlayGamesApiClient\Model\StartAMultiSession201Response;

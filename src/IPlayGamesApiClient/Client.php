@@ -1,15 +1,15 @@
 <?php
 
-namespace IPlayGames;
+namespace IPlayGamesApiClient;
 
-use IPlayGames\Games\GamesFlow;
-use IPlayGames\Sessions\SessionsFlow;
-use IPlayGames\Jackpot\JackpotFlow;
-use IPlayGames\Promotions\PromotionsFlow;
-use IPlayGames\Widgets\JackpotWidgetFlow;
-use IPlayGames\Widgets\PromotionWidgetFlow;
-use IPlayGames\MultiSession\MultiSessionFlow;
-use IPlayGames\Webhooks\WebhookHandler;
+use IPlayGamesApiClient\Games\GamesFlow;
+use IPlayGamesApiClient\Sessions\SessionsFlow;
+use IPlayGamesApiClient\Jackpot\JackpotFlow;
+use IPlayGamesApiClient\Promotions\PromotionsFlow;
+use IPlayGamesApiClient\Widgets\JackpotWidgetFlow;
+use IPlayGamesApiClient\Widgets\PromotionWidgetFlow;
+use IPlayGamesApiClient\MultiSession\MultiSessionFlow;
+use IPlayGamesApiClient\Webhooks\WebhookHandler;
 use IPlayGamesApiClient\Configuration;
 use IPlayGamesApiClient\Api\GamesApi;
 use IPlayGamesApiClient\Api\GameSessionsApi;

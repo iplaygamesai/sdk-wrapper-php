@@ -1,9 +1,9 @@
 <?php
 
-namespace IPlayGames\Promotions;
+namespace IPlayGamesApiClient\Promotions;
 
-use IPlayGames\Client;
-use IPlayGames\Traits\ModelToArrayTrait;
+use IPlayGamesApiClient\Client;
+use IPlayGamesApiClient\Traits\ModelToArrayTrait;
 use IPlayGamesApiClient\Api\EndpointsApi;
 use IPlayGamesApiClient\Model\CreateANewPromotionRequest;
 use IPlayGamesApiClient\Model\UpdateAPromotionRequest;

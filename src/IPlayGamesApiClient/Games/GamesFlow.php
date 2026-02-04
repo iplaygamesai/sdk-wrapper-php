@@ -1,8 +1,8 @@
 <?php
 
-namespace IPlayGames\Games;
+namespace IPlayGamesApiClient\Games;
 
-use IPlayGames\Client;
+use IPlayGamesApiClient\Client;
 use IPlayGamesApiClient\Api\GamesApi;
 use IPlayGamesApiClient\Model\ListGames200Response;
 use IPlayGamesApiClient\ApiException;
