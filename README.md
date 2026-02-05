@@ -15,14 +15,19 @@ use IPlayGamesApiClient\Client;
 
 $client = new Client([
     'api_key' => 'your-api-key',
-    'base_url' => 'https://api.gamehub.com', // Configurable!
+    'base_url' => 'https://api.iplaygames.ai',
 ]);
 
 // Get games
-$games = $client->games()->list(['currency' => 'USD']);
+$response = $client->games()->list(['currency' => 'USD']);
+if ($response['success']) {
+    foreach ($response['games'] as $game) {
+        echo $game['title'] . "\n";
+    }
+}
 
 // Start a game session
-$session = $client->sessions()->start([
+$response = $client->sessions()->start([
     'game_id' => 123,
     'player_id' => 'player_456',
     'currency' => 'USD',
@@ -30,20 +35,39 @@ $session = $client->sessions()->start([
     'ip_address' => '192.168.1.1',
 ]);
 
-// Redirect player to game
-header("Location: " . $session['game_url']);
+if ($response['success']) {
+    // Redirect player to game
+    header("Location: " . $response['game_url']);
+}
 ```
 
 ## Configuration
 
 ```php
 $client = new Client([
-    'api_key' => 'your-api-key',           // Required
-    'base_url' => 'https://api.gamehub.com', // Optional, defaults to https://api.gamehub.com
+    'api_key' => 'your-api-key',            // Required
+    'base_url' => 'https://api.iplaygames.ai', // Optional
     'timeout' => 30,                        // Optional, request timeout in seconds
     'verify_ssl' => true,                   // Optional, SSL verification
     'webhook_secret' => 'your-secret',      // Optional, for webhook verification
 ]);
+```
+
+## Response Pattern
+
+All flow methods return arrays with a consistent pattern:
+
+```php
+$response = $client->games()->list(['search' => 'bonanza']);
+
+if ($response['success']) {
+    // Use the data
+    print_r($response['games']);
+    print_r($response['meta']);
+} else {
+    // Handle error
+    echo $response['error'];
+}
 ```
 
 ## Available Flows
@@ -52,28 +76,34 @@ $client = new Client([
 
 ```php
 // List games with filters
-$games = $client->games()->list([
+$response = $client->games()->list([
     'currency' => 'USD',
     'country' => 'US',
     'category' => 'slots',
     'search' => 'bonanza',
 ]);
+if ($response['success']) {
+    foreach ($response['games'] as $game) {
+        echo "{$game['title']} by {$game['producer']}\n";
+    }
+    echo "Total: {$response['meta']['total']}\n";
+}
 
 // Get single game
-$game = $client->games()->get(123);
+$response = $client->games()->get(123);
 
 // Convenience methods
-$games = $client->games()->byProducer('Pragmatic Play');
-$games = $client->games()->byCategory('live');
-$games = $client->games()->search('sweet bonanza');
-$games = $client->games()->forPlayer('USD', 'US');
+$response = $client->games()->byProducer(42); // Producer ID (int) or name (string)
+$response = $client->games()->byCategory('live');
+$response = $client->games()->search('sweet bonanza');
+$response = $client->games()->forPlayer('USD', 'US');
 ```
 
 ### Sessions
 
 ```php
 // Start a game session
-$session = $client->sessions()->start([
+$response = $client->sessions()->start([
     'game_id' => 123,
     'player_id' => 'player_456',
     'currency' => 'USD',
@@ -84,113 +114,159 @@ $session = $client->sessions()->start([
     'return_url' => 'https://casino.com/lobby',
 ]);
 
+if ($response['success']) {
+    echo "Session ID: " . $response['session_id'] . "\n";
+    echo "Game URL: " . $response['game_url'] . "\n";
+}
+
 // Get session status
-$status = $client->sessions()->status($session['session_id']);
+$statusResponse = $client->sessions()->status($response['session_id']);
 
 // End session
-$client->sessions()->end($session['session_id']);
+$endResponse = $client->sessions()->end($response['session_id']);
 
 // Start demo session
-$demo = $client->sessions()->startDemo(123);
+$demoResponse = $client->sessions()->startDemo(123);
 ```
 
 ### Jackpot
 
 ```php
 // Get configuration
-$config = $client->jackpot()->getConfiguration();
+$configResponse = $client->jackpot()->getConfiguration();
 
 // Get all pools
-$pools = $client->jackpot()->getPools();
+$poolsResponse = $client->jackpot()->getPools();
+if ($poolsResponse['success']) {
+    foreach ($poolsResponse['pools'] as $pool) {
+        echo "{$pool['pool_type']}: {$pool['total_amount_formatted']}\n";
+    }
+}
 
 // Get specific pool
-$dailyPool = $client->jackpot()->getPool('daily');
-$weeklyPool = $client->jackpot()->getPool('weekly');
+$dailyPoolResponse = $client->jackpot()->getPool('daily');
 
 // Get winners
-$winners = $client->jackpot()->getWinners('daily');
+$winnersResponse = $client->jackpot()->getWinners('daily');
 
 // Manage games
-$client->jackpot()->addGames('daily', [1, 2, 3]);
-$client->jackpot()->removeGames('daily', [1]);
+$addResponse = $client->jackpot()->addGames('daily', [1, 2, 3]);
+$removeResponse = $client->jackpot()->removeGames('daily', [1]);
+
+// Get contributions
+$contribResponse = $client->jackpot()->getContributions([
+    'player_id' => 'player_456',
+]);
 ```
 
 ### Promotions
 
 ```php
 // List promotions
-$promotions = $client->promotions()->list(['status' => 'active']);
+$promoListResponse = $client->promotions()->list('active', '');
 
 // Get promotion details
-$promo = $client->promotions()->get(1);
+$promoResponse = $client->promotions()->get(1);
+
+// Create a promotion
+$createResponse = $client->promotions()->create([
+    'name' => 'Summer Tournament',
+    'promotion_type' => 'tournament',
+    'cycle_type' => 'daily',
+]);
 
 // Get leaderboard
-$leaderboard = $client->promotions()->getLeaderboard(1);
+$leaderboardResponse = $client->promotions()->getLeaderboard(1, 10, 0);
 
 // Opt-in player
-$client->promotions()->optIn(1, 'player_456', 'USD');
+$optInResponse = $client->promotions()->optIn(1, 'player_456', 'USD');
+
+// Manage games
+$manageResponse = $client->promotions()->manageGames(1, [1, 2, 3]);
 ```
 
 ### Jackpot Widgets
 
 ```php
 // 1. Register your domain
-$domain = $client->jackpotWidget()->registerDomain('casino.example.com');
-$domainToken = $domain['domain_token'];
+$domainResponse = $client->jackpotWidget()->registerDomain('casino.example.com', [
+    'name' => 'My Casino',
+]);
 
-// 2. Create anonymous token (view-only)
-$token = $client->jackpotWidget()->createAnonymousToken($domainToken);
+// 2. List registered domains
+$domainsResponse = $client->jackpotWidget()->listDomains();
 
-// 3. Create player token (can start game sessions)
-$playerToken = $client->jackpotWidget()->createPlayerToken(
-    $domainToken,
+// 3. Create anonymous token (view-only)
+$anonTokenResponse = $client->jackpotWidget()->createAnonymousToken('domain_token_here');
+
+// 4. Create player token (can interact)
+$playerTokenResponse = $client->jackpotWidget()->createPlayerToken(
+    'domain_token_here',
     'player_456',
     'USD'
 );
 
-// 4. Get embed code for your frontend
-echo $client->jackpotWidget()->getEmbedCode($token['token'], [
-    'theme' => 'dark',
-    'container' => 'jackpot-widget',
-]);
+// 5. Get embed code for your frontend
+if ($playerTokenResponse['success']) {
+    echo $client->jackpotWidget()->getEmbedCode($playerTokenResponse['token'], [
+        'theme' => 'dark',
+        'container' => 'jackpot-widget',
+    ]);
+}
 ```
 
 ### Promotion Widgets
 
 ```php
-// Same flow as jackpot widgets
-$domain = $client->promotionWidget()->registerDomain('casino.example.com');
-$token = $client->promotionWidget()->createPlayerToken(
-    $domain['domain_token'],
+// Register domain
+$domainResponse = $client->promotionWidget()->registerDomain('casino.example.com');
+
+// Create player token
+$tokenResponse = $client->promotionWidget()->createPlayerToken(
+    'domain_token',
     'player_456',
     'USD'
 );
-echo $client->promotionWidget()->getEmbedCode($token['token']);
+
+// Get embed code
+if ($tokenResponse['success']) {
+    echo $client->promotionWidget()->getEmbedCode($tokenResponse['token'], [
+        'theme' => 'dark',
+        'container' => 'promo-widget',
+    ]);
+}
 ```
 
 ### Multi-Session (TikTok-style Game Swiping)
 
 ```php
 // Start multi-session
-$multiSession = $client->multiSession()->start([
+$multiResponse = $client->multiSession()->start([
     'player_id' => 'player_456',
     'currency' => 'USD',
     'country_code' => 'US',
     'ip_address' => $_SERVER['REMOTE_ADDR'],
     'device' => 'mobile',
+    'game_ids' => ['123', '456', '789'], // Optional: specific games
 ]);
 
-// Embed the swipe UI
-echo $client->multiSession()->getIframe($multiSession['swipe_url'], [
-    'width' => '100%',
-    'height' => '100vh',
-]);
+if ($multiResponse['success']) {
+    echo "Swipe URL: " . $multiResponse['swipe_url'] . "\n";
+    echo "Total Games: " . $multiResponse['total_games'] . "\n";
+
+    // Get iframe HTML to embed the swipe UI
+    echo $client->multiSession()->getIframe($multiResponse['swipe_url'], [
+        'width' => '100%',
+        'height' => '100vh',
+        'id' => 'game-swiper',
+    ]);
+}
 
 // Get status
-$status = $client->multiSession()->status($multiSession['multi_session_id']);
+$statusResponse = $client->multiSession()->status($multiResponse['multi_session_id']);
 
 // End when player leaves
-$client->multiSession()->end($multiSession['multi_session_id']);
+$endResponse = $client->multiSession()->end($multiResponse['multi_session_id']);
 ```
 
 ## Handling Webhooks
@@ -459,21 +535,29 @@ $webhook->freespinTotalWinnings;   // Cumulative winnings
 ## Error Handling
 
 ```php
-try {
-    $session = $client->sessions()->start([...]);
-} catch (\GuzzleHttp\Exception\ClientException $e) {
-    // 4xx error
-    $response = json_decode($e->getResponse()->getBody(), true);
-    echo $response['message'];
-} catch (\GuzzleHttp\Exception\ServerException $e) {
-    // 5xx error
-    echo "Server error, please retry";
-} catch (\Exception $e) {
-    echo $e->getMessage();
+$response = $client->sessions()->start([
+    'game_id' => 123,
+    'player_id' => 'player_456',
+    'currency' => 'USD',
+    'country_code' => 'US',
+    'ip_address' => '192.168.1.1',
+]);
+
+if (!$response['success']) {
+    echo "Error: " . $response['error'];
+    return;
 }
+
+// Use the data
+echo "Session ID: " . $response['session_id'];
+```
+
+## Running Tests
+
+```bash
+composer test
 ```
 
 ## License
 
 MIT
-# sdk-wrapper-php
